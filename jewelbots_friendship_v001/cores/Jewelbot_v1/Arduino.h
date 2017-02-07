@@ -1,6 +1,11 @@
 #ifndef ARDUINO_H_
 #define ARDUINO_H_
 
+
+#ifdef __cplusplus
+extern "C"{
+#endif // __cplusplus
+  
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -51,7 +56,11 @@
 #include "led_sequence.h"
 #include "pmic_driver.h"
 #include "scan.h"
-// Arduino specific code
+#ifdef __cplusplus
+}
+#endif
+
+// Arduino specific code - C++
 #include "LED.h"
 #include "Buzzer.h"
 #include "Animation.h"

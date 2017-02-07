@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C"{
+#endif // __cplusplus
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -51,6 +55,9 @@
 #include "peer_management.h"
 #include "pmic_driver.h"
 #include "scan.h"
+#ifdef __cplusplus
+}
+#endif
 
 // Arduino
 #include "Arduino.h"
