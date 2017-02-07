@@ -11,7 +11,7 @@
             [
                 {
                     "name": "Jewelbots Friendship Library",
-                    "architecture": "Jewelbots v1",
+                    "architecture": "Jewelbots_v1",
                     "version": "0.0.1",
                     "category": "Contributed",
                     "url": "https://github.com/Jewelbots/arduino-friendship/releases/download/v0.0.1/jewelbots_friendship_v001.tar.gz",
