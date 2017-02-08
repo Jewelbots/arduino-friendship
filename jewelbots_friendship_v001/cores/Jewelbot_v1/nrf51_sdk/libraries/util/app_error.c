@@ -26,7 +26,6 @@
 #include "nordic_common.h"
 #include "sdk_errors.h"
 #include "nrf_log.h"
-#include "SEGGER_RTT.h"
 
 /**@brief Function for error handling, which is called when an error has occurred.
  *
@@ -122,7 +121,7 @@ void app_error_save_and_stop(uint32_t id, uint32_t pc, uint32_t info)
     UNUSED_VARIABLE(m_error_data);
 
 
-    
+
     //UNUSED_VARIABLE(p_error_info);
     // If printing is disrupted, remove the irq calls, or set the loop variable to 0 in the debugger.
     //__disable_irq();

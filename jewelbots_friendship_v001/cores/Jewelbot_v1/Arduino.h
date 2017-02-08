@@ -2,10 +2,6 @@
 #define ARDUINO_H_
 
 
-#ifdef __cplusplus
-extern "C"{
-#endif // __cplusplus
-  
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -14,7 +10,6 @@ extern "C"{
 
 
 // Exposing sdk and Jewelbots code for a start
-#include "advertising.h"
 #include "app_button.h"
 #include "app_error.h"
 #include "app_scheduler.h"
@@ -44,6 +39,7 @@ extern "C"{
 #include "nrf_soc.h"
 #include "softdevice_handler_appsh.h"
 // application
+#include "advertising.h"
 #include "ble_central_event_handler.h"
 #include "button_handler.h"
 #include "db_discovery.h"
@@ -56,9 +52,6 @@ extern "C"{
 #include "led_sequence.h"
 #include "pmic_driver.h"
 #include "scan.h"
-#ifdef __cplusplus
-}
-#endif
 
 // Arduino specific code - C++
 #include "LED.h"

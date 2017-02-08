@@ -23,7 +23,6 @@
 #include "nrf_log.h"
 #include "sdk_common.h"
 #include "nrf_drv_config.h"
-#include "SEGGER_RTT.h"
 #if CLOCK_ENABLED
 #include "nrf_drv_clock.h"
 #endif
@@ -444,7 +443,7 @@ uint32_t sd_check_ram_start(uint32_t sd_req_ram_start)
 #endif //NRF_LOG_USES_RTT
         return NRF_SUCCESS;
     }
-#endif//defined(S130) || defined(S132) || defined(S332) 
+#endif//defined(S130) || defined(S132) || defined(S332)
     return NRF_SUCCESS;
 }
 

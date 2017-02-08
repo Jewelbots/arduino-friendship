@@ -55,6 +55,7 @@ extern "C"{
 #include "peer_management.h"
 #include "pmic_driver.h"
 #include "scan.h"
+#include "jwb_twi.h"
 #ifdef __cplusplus
 }
 #endif
@@ -94,8 +95,6 @@ static char *__attribute__((unused)) ident =
     "$Build: DEVKIT " __DATE__ ", " __TIME__ " $";
 #endif
 
-nrf_drv_twi_t app_twi_instance = NRF_DRV_TWI_INSTANCE(1);
-
 static bool m_erase_bonds = false;
 
 static void check_reset_reason() {
@@ -117,19 +116,6 @@ static void check_reset_reason() {
 }
 
 
-static void leds_init(void) {
-#ifndef REAL_JEWELBOT
-  nrf_gpio_cfg_output(LED_0);
-  nrf_gpio_cfg_output(LED_1);
-  nrf_gpio_cfg_output(LED_2);
-  nrf_gpio_cfg_output(LED_3);
-  nrf_gpio_pin_set(LED_0);
-  nrf_gpio_pin_set(LED_1);
-  nrf_gpio_pin_clear(LED_2);
-  nrf_gpio_pin_clear(LED_3);
-#else
-#endif
-}
 
 static void jewelbots_power_save(void) {
   clear_led();
@@ -148,20 +134,6 @@ static void timers_init(void) {
   APP_TIMER_APPSH_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, true);
 }
 
-static void twi_init() {
-  uint32_t err_code;
-  const nrf_drv_twi_config_t twi_config = {
-      .scl = I2C_SCL,
-      .sda = I2C_SDA,
-      .frequency = NRF_TWI_FREQ_100K, // was 100K
-      .interrupt_priority = APP_IRQ_PRIORITY_HIGH};
-
-  err_code = nrf_drv_twi_init(&app_twi_instance, &twi_config, NULL,
-                              NULL); // todo add event handler
-  APP_ERROR_CHECK(err_code);
-
-  nrf_drv_twi_enable(&app_twi_instance);
-}
 
 int main(void) {
 	bool  app_dfu = (NRF_POWER->GPREGRET == BOOTLOADER_DFU_END);
@@ -186,7 +158,6 @@ int main(void) {
 #endif
   services_init(); // 3
   boot_up_led_sequence();
-  leds_init(); // nrf devboard leds
   buttons_init();
 #ifdef REAL_JEWELBOT
   haptics_init();
