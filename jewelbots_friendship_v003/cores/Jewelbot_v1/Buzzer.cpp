@@ -1,8 +1,12 @@
-#include "Buzzer.h"
-#include "haptics_driver.h"
 #include "Arduino.h"
-
+#include "Buzzer.h"
+#ifdef __cplusplus
 extern "C"{
+#endif // __cplusplus
+#include "haptics_driver.h"
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus
 
   Buzzer::Buzzer()
   {
@@ -65,5 +69,3 @@ extern "C"{
 
     haptics_custom(amplitude, milliseconds);
   }
-
-} // extern "C"

@@ -2,12 +2,19 @@
 #include <stdint.h>
 #include <string.h>
 #include "Arduino.h"
+#include "Timer.h"
+#ifdef __cplusplus
+extern "C"{
+#endif // __cplusplus
 #include "app_error.h"
+#include "app_scheduler.h"
 #include "app_timer.h"
 #include "app_util.h"
-#include "Timer.h"
-
-extern "C"{
+#include "common_defines.h"
+#include "nrf_soc.h"
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus
 
   Timer::Timer()
   {
@@ -46,13 +53,14 @@ extern "C"{
     uint32_t err_code;
     err_code = app_timer_create(&pause_timer_id, APP_TIMER_MODE_SINGLE_SHOT, pause_timeout_handler);
     APP_ERROR_CHECK(err_code);
-    err_code = app_timer_create(&runtime_timer_id, APP_TIMER_MODE_REPEATED, runtime_timeout_handler);
+    /*err_code = app_timer_create(&runtime_timer_id, APP_TIMER_MODE_REPEATED, runtime_timeout_handler);
     APP_ERROR_CHECK(err_code);
 
     err_code = app_timer_start(runtime_timer_id, 480 * 32768, NULL);
     APP_ERROR_CHECK(err_code);
-    app_timer_cnt_get(&start_ticks);
+    app_timer_cnt_get(&start_ticks);*/
   }
+
 
   void Timer::pause(uint32_t milliseconds)
   {
@@ -79,4 +87,3 @@ extern "C"{
 
       return convert_ticks_ms(elapsed_ticks);
     }
-}

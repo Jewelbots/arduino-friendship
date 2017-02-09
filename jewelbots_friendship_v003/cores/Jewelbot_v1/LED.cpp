@@ -1,5 +1,11 @@
-
+#include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+#include "Arduino.h"
 #include "LED.h"
+#ifdef __cplusplus
+extern "C"{
+#endif // __cplusplus
 #include "led_sequence.h"
 #include "app_error.h"
 #include "app_timer.h"
@@ -12,14 +18,9 @@
 #include "nrf_delay.h"
 #include "nrf_gpio.h"
 #include "nrf_log.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
-#include "Arduino.h"
-
-
-extern "C"{
-
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus
 
   uint8_t color_values[2];
 
@@ -81,7 +82,3 @@ extern "C"{
     led_cmd_t options[4] = {number, r, g, b, 1};
     set_led_state_handler(options);
   }
-
-
-
-} // extern "C"

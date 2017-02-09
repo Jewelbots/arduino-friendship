@@ -3,9 +3,6 @@
 #define __LED_H__
 
 
-
-extern "C"{
-
 #include <stdbool.h>
 #include <stdint.h>
 #include "LED_Colors.h"
@@ -26,6 +23,5 @@ class LED {
 
 };
 
-} // extern "C"
 
 #endif

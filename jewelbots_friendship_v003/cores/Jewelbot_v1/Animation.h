@@ -2,10 +2,6 @@
 #ifndef __ANIMATION_H__
 #define __ANIMATION_H__
 
-#ifdef __cplusplus
-extern "C"{
-#endif // __cplusplus
-
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -20,8 +16,5 @@ class Animation {
     void rainbows(void);
  };
 
- #ifdef __cplusplus
- } // extern "C"
- #endif // __cplusplus
 
 #endif

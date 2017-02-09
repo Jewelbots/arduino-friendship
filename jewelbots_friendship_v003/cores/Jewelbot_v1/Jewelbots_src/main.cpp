@@ -17,6 +17,7 @@ extern "C"{
 #include "ble_advdata.h"
 #include "ble_conn_params.h"
 #include "ble_conn_state.h"
+#include "common_defines.h"
 #include "fds.h"
 #include "fstorage.h"
 #include "nordic_common.h"
@@ -56,6 +57,7 @@ extern "C"{
 #include "pmic_driver.h"
 #include "scan.h"
 #include "jwb_twi.h"
+
 #ifdef __cplusplus
 }
 #endif
@@ -145,9 +147,7 @@ int main(void) {
   ret_code_t err_code = 0;
   nrf_gpio_cfg_output(LED_RST);
   nrf_gpio_pin_clear(LED_RST);
-  nrf_delay_us(10000);
   nrf_gpio_pin_set(LED_RST);
-  nrf_delay_us(20000);
   err_code = NRF_LOG_INIT();
   APP_ERROR_CHECK(err_code);
   scheduler_init();
@@ -176,7 +176,9 @@ int main(void) {
   messaging_init();
   jewelbot_service_init();
   jewelbots_power_save();
-
+  arduino_timer_init();
+  // Run additional init from the setup function
+  setup();
   for (;;) {
     state_machine_dispatch();
     app_sched_execute();

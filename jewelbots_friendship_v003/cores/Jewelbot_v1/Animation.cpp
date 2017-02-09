@@ -1,5 +1,11 @@
-
+#include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+#include "Arduino.h"
 #include "Animation.h"
+#ifdef __cplusplus
+extern "C"{
+#endif // __cplusplus
 #include "led_sequence.h"
 #include "app_error.h"
 #include "app_timer.h"
@@ -12,18 +18,9 @@
 #include "nrf_delay.h"
 #include "nrf_gpio.h"
 #include "nrf_log.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <string.h>
-#include "Arduino.h"
-
-
 #ifdef __cplusplus
-extern "C"{
+} // extern "C"
 #endif // __cplusplus
-
-
-
 
   Animation::Animation()
   {
@@ -299,6 +296,3 @@ void Animation::rainbows(void){
     clear_led();
     disable_led();
 }
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus

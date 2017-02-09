@@ -1,9 +1,5 @@
-
-#ifndef __DELAY_H__
-#define __DELAY_H__
-
-
-extern "C"{
+#ifndef __TIMER_H__
+#define __TIMER_H__
 
   void arduino_timer_init(void);
 
@@ -15,6 +11,5 @@ extern "C"{
     uint32_t runtime_ms(void);
 
   };
-} // extern "C"
 
 #endif

@@ -3,8 +3,6 @@
 #define __BUZZER_H__
 
 
-extern "C"{
-
 #include "Arduino.h"
 
 class Buzzer {
@@ -30,6 +28,5 @@ public:
   void custom_buzz(uint8_t amplitude, uint32_t duration);
 
 };
-} // extern "C"
 
 #endif
