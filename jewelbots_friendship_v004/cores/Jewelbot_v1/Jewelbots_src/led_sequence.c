@@ -125,7 +125,7 @@ void signal_power_down() {
   led_cmd_t led2 = {1, 0x22, 0x00, 0x3F, 1};
   led_cmd_t led3 = {2, 0x3F, 0x1C, 0x3A, 1};
   led_cmd_t led4 = {0, 0x00, 0x00, 0x3F, 1};
-	
+
 	//  quickly fade out the colors
   for (uint8_t i = 11; i > 0; i--) {
     led1.r = led1.r - 5;
@@ -147,7 +147,7 @@ void signal_power_down() {
     set_led_state_handler(&led4);
     nrf_delay_us(95000);
   }
-	
+
   clear_led();
   disable_led();
 }

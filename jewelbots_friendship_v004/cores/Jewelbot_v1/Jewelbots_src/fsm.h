@@ -32,7 +32,7 @@ enum jwb_signal_t {
   BOND_WITH_MASTER_DEVICE_SIG, //21
   BONDED_TO_MASTER_DEVICE_SIG,
   JEWELBOT_CONNECTED_TO_MASTER_SIG
-  
+
 };
 
 typedef short signal;
@@ -58,6 +58,8 @@ struct jwb_event {
   signal volatile sig;
   uint16_t volatile ticks;
 };
+
+void button_press(void);
 
 void set_create_friends_list(void);
 void jewelbot_state_machine_init(void);

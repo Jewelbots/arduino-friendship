@@ -53,12 +53,12 @@ extern "C"{
     uint32_t err_code;
     err_code = app_timer_create(&pause_timer_id, APP_TIMER_MODE_SINGLE_SHOT, pause_timeout_handler);
     APP_ERROR_CHECK(err_code);
-    /*err_code = app_timer_create(&runtime_timer_id, APP_TIMER_MODE_REPEATED, runtime_timeout_handler);
+    err_code = app_timer_create(&runtime_timer_id, APP_TIMER_MODE_REPEATED, runtime_timeout_handler);
     APP_ERROR_CHECK(err_code);
 
     err_code = app_timer_start(runtime_timer_id, 480 * 32768, NULL);
     APP_ERROR_CHECK(err_code);
-    app_timer_cnt_get(&start_ticks);*/
+    app_timer_cnt_get(&start_ticks);
   }
 
 
@@ -73,9 +73,7 @@ extern "C"{
     timer_flag = true;
     app_timer_start(pause_timer_id, pause_in_ticks, NULL);
     while (timer_flag){
-      app_sched_execute();
-      uint32_t err_code = sd_app_evt_wait();
-      APP_ERROR_CHECK(err_code);
+      jewelbots_run();
     }
   }
 

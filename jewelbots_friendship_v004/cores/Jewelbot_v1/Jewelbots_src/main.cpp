@@ -58,6 +58,7 @@ extern "C"{
 #include "scan.h"
 #include "jwb_twi.h"
 
+
 #ifdef __cplusplus
 }
 #endif
@@ -180,12 +181,15 @@ int main(void) {
   // Run additional init from the setup function
   setup();
   for (;;) {
-    state_machine_dispatch();
-    app_sched_execute();
-#ifndef RTT
-    ret_code_t err_code = sd_app_evt_wait();
-    APP_ERROR_CHECK(err_code);
-#endif
+    if (!get_arduino_coding()){
+      state_machine_dispatch();
+      app_sched_execute();
+      ret_code_t err_code = sd_app_evt_wait();
+      APP_ERROR_CHECK(err_code);
+    } else {
+      loop();
+    }
+
   }
 }
 

@@ -8,6 +8,12 @@
 
 #include "utils.h"
 
+bool arduino_coding = false;
+
+void set_arduino_coding(void) { arduino_coding = true; }
+bool get_arduino_coding(void) { return arduino_coding; }
+
+
 void ble_address_to_string_convert(ble_gap_addr_t address,
                                    uint8_t *string_buffer) {
   const int address_length = 6;

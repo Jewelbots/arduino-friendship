@@ -9,15 +9,19 @@
 #include <math.h>
 
 // Arduino specific code - C++
+#include "JWB_Utils.h"
 #include "LED.h"
 #include "Buzzer.h"
 #include "Animation.h"
 #include "Timer.h"
 
+
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
 
+#include "utils.h"
+#include "fsm.h"
 
 /* sketch */
 extern void setup( void ) ;

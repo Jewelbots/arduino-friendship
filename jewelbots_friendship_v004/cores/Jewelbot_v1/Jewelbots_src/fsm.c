@@ -37,7 +37,7 @@
 #define SHORT_LED_TIMER_DELAY                                                  \
   APP_TIMER_TICKS(1000, APP_TIMER_PRESCALER) // todo: reduce to one timer. used
                                              // for adding friends.
-																						 
+
 #define LED_FLASH_TIMEOUT APP_TIMER_TICKS(300, APP_TIMER_PRESCALER)
 #define DECLINE_FRIEND_TIMEOUT APP_TIMER_TICKS(30000, APP_TIMER_PRESCALER)
 #define MSG_COMPOSE_TIMEOUT APP_TIMER_TICKS(5000, APP_TIMER_PRESCALER)
@@ -74,6 +74,11 @@ static void jwb_decline_friend(jewelbot_t *me, jwb_event const *e);
 static void jwb_on(jewelbot_t *me, jwb_event const *e);
 //static void jwb_off(jewelbot_t *me, jwb_event const *e);
 static void jwb_charging(jewelbot_t *me, jwb_event const *e);
+
+__attribute__((weak)) void button_press(void)
+{
+}
+
 
 CIRCBUF_DEF(current_colors_cb, 5);
 
@@ -281,8 +286,8 @@ void jwb_add_friend(jewelbot_t *me, jwb_event const *e) {
 		if (get_ff_conn_as_central()) {
 			clear_led();
 		}
-    
-    
+
+
 		if (!valid_pending_friend()) {
 			set_jwb_event_signal(MOVE_OUT_OF_RANGE_SIG);
 			fsm_transition((fsm *)me, &jwb_decline_friend);
@@ -310,7 +315,7 @@ void jwb_add_friend(jewelbot_t *me, jwb_event const *e) {
     cycle_through_all_colors(me);
     all_colors = USE_ALL_COLORS;
     app_timer_start(led_timer_delay_id, LED_TIMER_DELAY, (void *)&all_colors);
-    
+
     break;
   default:
     if (e->sig == CONNECTEE_FOUND_SIG) {
@@ -379,11 +384,15 @@ static void jwb_messaging(jewelbot_t *me, jwb_event const *e) {
       } else {
         NRF_LOG_DEBUG("NO RECIPIENTS\r\n");
         set_jwb_event_signal(JEWELBOT_ON_SIG);
-				led_cmd_t red_on = {0, 0x3F, 0x00, 0x00, 1};
-				set_led_state_handler(&red_on);
-				uint32_t err_code = app_timer_start(led_flash_timer_id,
-                                            LED_FLASH_TIMEOUT, NULL);
-        APP_ERROR_CHECK(err_code);
+        if (!get_arduino_coding()){
+				    led_cmd_t red_on = {0, 0x3F, 0x00, 0x00, 1};
+				    set_led_state_handler(&red_on);
+				    uint32_t err_code = app_timer_start(led_flash_timer_id,
+                                LED_FLASH_TIMEOUT, NULL);
+            APP_ERROR_CHECK(err_code);
+        } else {
+          button_press();
+        }
       }
     }
     break;
@@ -550,11 +559,11 @@ void jwb_on(jewelbot_t *me, jwb_event const *e) {
                                          // for breathing
       APP_ERROR_CHECK(err_code);
       friend_timer_started = true;
-      
+
       if (has_friends()) {
 				//NRF_LOG_DEBUG("Start Breathe\r\n");
         breathe_friends(); // pops and shows
-#ifdef DEBUG    
+#ifdef DEBUG
         if (is_advertising()) {
           NRF_LOG_DEBUG("@");
         }
@@ -565,9 +574,9 @@ void jwb_on(jewelbot_t *me, jwb_event const *e) {
       }
     }
     if (pmic_5V_present()) {
-      
+
       set_jwb_event_signal(CHARGING_SIG);
-      
+
     }
 
     break;
@@ -685,8 +694,8 @@ static void decline_friend_handler(void *p_context) {
   UNUSED_PARAMETER(p_context);
   signal sig = get_current_event()->sig;
 
-  if ((sig == WAITING_FOR_CONNECTEE_SIG) || 
-			(sig == CONNECTEE_FOUND_SIG) || 
+  if ((sig == WAITING_FOR_CONNECTEE_SIG) ||
+			(sig == CONNECTEE_FOUND_SIG) ||
 			(sig == ADD_FRIEND_SIG) ||
 			(sig == ACCEPT_FRIEND_SIG) ||
 			(sig == BUTTON_PRESS_LONG_SIG)) {
@@ -767,7 +776,7 @@ bool friend_adding_mode(void) {
   jwb_event *evt = get_current_event();
   return (evt->sig == CONNECTEE_FOUND_SIG ||
           evt->sig == WAITING_FOR_CONNECTEE_SIG ||
-          evt->sig == BUTTON_PRESS_LONG_SIG || 
+          evt->sig == BUTTON_PRESS_LONG_SIG ||
 					evt->sig == ADD_FRIEND_SIG ||
 					evt->sig == ACCEPT_FRIEND_SIG);
 }
@@ -818,7 +827,7 @@ void print_friends_list() {
 
   NRF_LOG_PRINTF_DEBUG("number of friends: %u\r\n",
                     jwb.friends_list.num_of_friends);
-	
+
   for (uint8_t i = 0; i < MAX_NUM_OF_FRIENDS; i++) { //jwb.friends_list.num_of_friends; i++) {
     uint8_t str[50] = {0};
     ble_address_to_string_convert(jwb.friends_list.friends[i].address, str);
