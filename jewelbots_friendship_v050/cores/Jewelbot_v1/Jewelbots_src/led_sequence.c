@@ -30,6 +30,7 @@
 
 #define LED_BUFFER_SIZE 16
 #define SENTINEL_VALUE 0xEE
+#define NUM_COLORS_UNLOCKED 4
 color_rgb_t colors_array[] = {
     {.word = BLUE}, {.word = GREEN}, {.word = RED}, {.word = YELLOW}};
 
@@ -37,6 +38,38 @@ CIRCBUF_DEF(led_cb,
             LED_BUFFER_SIZE); // move to a much higher number for testing 17?
 void led_sequence_buffer_push(uint8_t color_index) {
   c_buf_code_t err_code = c_buf_push(&led_cb, color_index);
+}
+
+// Arduino variable definitions
+static bool arduino_colors[] = {false, false, false, false};
+
+bool see_red_friends(void) { return arduino_colors[0]; }
+bool see_green_friends(void) { return arduino_colors[1]; }
+bool see_blue_friends(void) { return arduino_colors[2]; }
+bool see_cyan_friends(void) { return arduino_colors[3]; }
+
+static void save_arduino_colors(uint8_t num_colors, uint8_t *colors) {
+  for (uint8_t i = 0; i < NUM_COLORS_UNLOCKED; i++) {
+    arduino_colors[i] = false;
+  }
+  for (uint8_t i = 0; i < num_colors; i++){
+    switch (colors[i]){
+      case 0:
+        arduino_colors[0] = true;
+        break;
+      case 1:
+        arduino_colors[1] = true;
+        break;
+      case 2:
+        arduino_colors[2] = true;
+        break;
+      case 3:
+        arduino_colors[3] = true;
+        break;
+      default:
+        break;
+    }
+  }
 }
 
 cbuf_t *get_led_buffer() { return &led_cb; }
@@ -303,7 +336,7 @@ void breathe_friends() {
   c_buf_code_t err_code = BUF_SUCCESS;
   uint8_t num_of_colors = 0;
   while (err_code == BUF_SUCCESS) {
-    if (num_of_colors >= 4) {
+    if (num_of_colors >= NUM_COLORS_UNLOCKED) {
       break; // todo: better way
     }
     err_code = c_buf_pop(&led_cb, &color_index);
@@ -314,6 +347,7 @@ void breathe_friends() {
   }
   if (err_code != BUF_SUCCESS) {
   }
+  save_arduino_colors(num_of_colors, colors);
   if (num_of_colors > 0) {
     if (num_of_colors > 4) {
     }

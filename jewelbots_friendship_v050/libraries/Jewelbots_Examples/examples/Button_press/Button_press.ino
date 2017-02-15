@@ -13,10 +13,21 @@
  * IN THE SOFTWARE.
  */
 
-// Example demonstrating some features of the LED, Buzzer, and Timer libraries.
-LED led;
-Buzzer buzz;
-Timer timer; 
+/*
+ * This example demonstrates how to include a function that runs when the button is pressed for a short time.
+ * This button functionality replaces the battery check function that displays a short, single red light flash when the button is pressed.
+ * This button function is only available when there are no friend group colors to display.
+ * (When you are not around any friends, or your friends have turned their Jewelbots off by holding the Magic Button for 5 seconds. )
+ */
+
+// Declare Jewelbots hardware components to use
+Animation animation;
+
+// This function is run when the button is pressed for a short duration when no friend groups are displayed
+// You can use this function to show off your school colors on command or buzz along to a favorite song 
+void button_press() {
+  animation.jewelbots_logo();
+}
 
 void setup() {
   // Required first setup command here
@@ -25,24 +36,8 @@ void setup() {
 
   // put your setup code here, to run once:
 
-  // Turn on one light green
-  // Start a medium length buzz
-  // Pause for 1 second (1000 us)
-  // Turn off the green light
-  led.turn_on_single(NW, GREEN);
-  buzz.medium_buzz();
-  timer.pause(1000);
-  led.turn_off_single(NW);
 
-  // Turn on all lights magenta
-  // Start an extra long buzz
-  // Pause for 3 seconds (3000 us)
-  // Turn off all lights
-  led.turn_on_all(MAGENTA);
-  buzz.extra_long_buzz();
-  timer.pause(3000);
-  led.turn_off_all();
-}
+} // setup
 
 void loop() {
   // Required command in loop to run background Jewelbots functions
@@ -51,5 +46,4 @@ void loop() {
   // put your main code here, to run repeatedly:
 
 
-}
-
+} // loop

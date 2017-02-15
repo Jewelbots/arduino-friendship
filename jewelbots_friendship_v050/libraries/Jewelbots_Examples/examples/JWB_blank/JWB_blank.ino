@@ -13,12 +13,12 @@
  * IN THE SOFTWARE.
  */
 
-Animation animation;
-
-void button_press() {
-  animation.jewelbots_logo();
-}
-
+/*
+ * This example contains the minimum code required to compile and run Friendship mode on your Jewelbot.
+ *
+ * Make sure to always have these two commands in your setup() and loop() functions to ensure everything works.
+ */
+ 
 void setup() {
   // Required first setup command here
   // Set a boolean to tell the Jewelbot that Arduino code is included
@@ -27,7 +27,7 @@ void setup() {
   // put your setup code here, to run once:
 
 
-}
+} // setup
 
 void loop() {
   // Required command in loop to run background Jewelbots functions
@@ -36,4 +36,4 @@ void loop() {
   // put your main code here, to run repeatedly:
 
 
-}
+} // loop

@@ -22,6 +22,7 @@ extern "C"{
 
 #include "utils.h"
 #include "fsm.h"
+#include "led_sequence.h"
 
 /* sketch */
 extern void setup( void ) ;

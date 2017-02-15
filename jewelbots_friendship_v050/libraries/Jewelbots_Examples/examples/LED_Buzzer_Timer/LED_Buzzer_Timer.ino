@@ -13,6 +13,18 @@
  * IN THE SOFTWARE.
  */
 
+/*
+ * This example demonstrates some features of the LED, Buzzer, and Timer libraries.
+ * These libraries work the same way as in the older Arduino coding "board."
+ *
+ * Here the code runs a few different functions during the setup of the Jewelbot.
+ */
+
+// Declare Jewelbots hardware components to use
+LED led;
+Buzzer buzz;
+Timer timer;
+
 void setup() {
   // Required first setup command here
   // Set a boolean to tell the Jewelbot that Arduino code is included
@@ -20,8 +32,25 @@ void setup() {
 
   // put your setup code here, to run once:
 
+  // Turn on one light green
+  // Start a medium length buzz
+  // Pause for 1 second (1000 us)
+  // Turn off the green light
+  led.turn_on_single(NW, GREEN);
+  buzz.medium_buzz();
+  timer.pause(1000);
+  led.turn_off_single(NW);
 
-}
+  // Turn on all lights magenta
+  // Start an extra long buzz
+  // Pause for 3 seconds (3000 us)
+  // Turn off all lights
+  led.turn_on_all(MAGENTA);
+  buzz.extra_long_buzz();
+  timer.pause(3000);
+  led.turn_off_all();
+
+} // setup
 
 void loop() {
   // Required command in loop to run background Jewelbots functions
@@ -30,4 +59,4 @@ void loop() {
   // put your main code here, to run repeatedly:
 
 
-}
+} // loop

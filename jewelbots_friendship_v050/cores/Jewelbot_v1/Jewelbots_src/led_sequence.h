@@ -17,7 +17,7 @@ void led_sequence_buffer_push(uint8_t color_index);
 void cycle_through_all_colors(jewelbot_t *me);
 void cycle_through_present_colors(buf_array_t *colors);
 void flash_white(void);
-void led_indicate_bonding_state(void); 
+void led_indicate_bonding_state(void);
 bool friends_to_display(void);
 void initialize_led_buffer(void);
 void led_indicate_charging_state(bool is_charging);
@@ -31,5 +31,10 @@ void set_current_msg_iterator(uint8_t new_value);
 void reset_current_msg_iterator(void);
 void led_indicate_connected(void);
 void signal_friend_success(uint8_t color_index);
+
+bool see_red_friends(void);
+bool see_green_friends(void);
+bool see_blue_friends(void);
+bool see_cyan_friends(void);
 
 #endif
