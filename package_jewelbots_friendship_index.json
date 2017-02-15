@@ -12,32 +12,10 @@
                 {
                     "name": "Jewelbots Friendship Library",
                     "architecture": "Jewelbot_v1",
-                    "version": "0.0.2",
+                    "version": "0.5.0",
                     "category": "Contributed",
-                    "url": "https://github.com/Jewelbots/arduino-friendship/releases/download/v0.0.2/jewelbots_friendship_v002.tar.gz",
-                    "archiveFileName": "jewelbots_friendship_v002.tar.gz",
-                    "size": "3100000",
-                    "boards":
-                    [
-                        {"name": "Jewelbots Friendship"}
-
-                    ],
-                    "toolsDependencies":
-                    [
-                        {
-                            "packager": "arduino",
-                            "name": "arm-none-eabi-gcc",
-                            "version": "4.8.3-2014q1"
-                        }
-                    ]
-                },
-                {
-                    "name": "Jewelbots Friendship Library",
-                    "architecture": "Jewelbot_v1",
-                    "version": "0.1.0",
-                    "category": "Contributed",
-                    "url": "https://github.com/Jewelbots/arduino-friendship/releases/download/v0.1.0/jewelbots_friendship_v010.tar.gz",
-                    "archiveFileName": "jewelbots_friendship_v010.tar.gz",
+                    "url": "https://github.com/Jewelbots/arduino-friendship/releases/download/v0.5.0/jewelbots_friendship_v050.tar.gz",
+                    "archiveFileName": "jewelbots_friendship_v050.tar.gz",
                     "size": "3100000",
                     "boards":
                     [
