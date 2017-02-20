@@ -12,10 +12,10 @@
                 {
                     "name": "Jewelbots Friendship Library",
                     "architecture": "Jewelbot_v1",
-                    "version": "0.5.0",
+                    "version": "1.1.0",
                     "category": "Contributed",
-                    "url": "https://github.com/Jewelbots/arduino-friendship/releases/download/v0.5.0/jewelbots_friendship_v050.tar.gz",
-                    "archiveFileName": "jewelbots_friendship_v050.tar.gz",
+                    "url": "https://github.com/Jewelbots/arduino-friendship/releases/download/v1.1.0/jewelbots_friendship_v110.tar.gz",
+                    "archiveFileName": "jewelbots_friendship_v110.tar.gz",
                     "size": "3100000",
                     "boards":
                     [
