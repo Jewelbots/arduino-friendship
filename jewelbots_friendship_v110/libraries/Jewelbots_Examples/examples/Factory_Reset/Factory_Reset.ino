@@ -13,27 +13,18 @@
  * IN THE SOFTWARE.
  */
 
-/*
- * This example contains the minimum code required to compile and run Friendship mode on your Jewelbot.
- *
- * Make sure to always have these two commands in your setup() and loop() functions to ensure everything works.
- */
- 
-void setup() {
-  // Required first setup command here
-  // Set a boolean to tell the Jewelbot that Arduino code is included
-  set_arduino_coding();
+ /*
+  * This blank code can be used to reset a Jewelbot to factory settings.
+  */
 
-  // put your setup code here, to run once:
+void setup() {
+  // Leave blank to reset the Jewelbot to Factory settings
 
 
 } // setup
 
 void loop() {
-  // Required command in loop to run background Jewelbots functions
-  jewelbots_run();
-
-  // put your main code here, to run repeatedly:
+  // Leave blank to reset the Jewelbot to Factory settings
 
 
 } // loop
