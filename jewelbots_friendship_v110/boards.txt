@@ -1,4 +1,4 @@
-nRF51822.name=JWB Friendship
+nRF51822.name=Friendship Coding Mode
 
 nRF51822.upload.tool=JWBLoader
 nRF51822.upload.protocol=
