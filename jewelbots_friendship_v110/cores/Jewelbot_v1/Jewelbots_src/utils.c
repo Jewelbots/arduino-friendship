@@ -11,6 +11,7 @@
 bool arduino_coding = false;
 
 void set_arduino_coding(void) { arduino_coding = true; }
+void set_arduino_coding_false(void) { arduino_coding = false; }
 bool get_arduino_coding(void) { return arduino_coding; }
 
 
