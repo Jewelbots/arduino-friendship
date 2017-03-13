@@ -384,7 +384,7 @@ static void jwb_messaging(jewelbot_t *me, jwb_event const *e) {
       } else {
         NRF_LOG_DEBUG("NO RECIPIENTS\r\n");
         set_jwb_event_signal(JEWELBOT_ON_SIG);
-        if (!get_arduino_coding()){
+        if (!get_arduino_button()){
 				    led_cmd_t red_on = {0, 0x3F, 0x00, 0x00, 1};
 				    set_led_state_handler(&red_on);
 				    uint32_t err_code = app_timer_start(led_flash_timer_id,

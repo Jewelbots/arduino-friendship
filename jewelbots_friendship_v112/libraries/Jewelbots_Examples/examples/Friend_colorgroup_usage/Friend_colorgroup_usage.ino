@@ -33,9 +33,9 @@
  * after sending or receiving a message.
  */
 void setup() {
-  // Required first setup command here
-  // Set a boolean to tell the Jewelbot that Arduino code is included
-  set_arduino_coding();
+  // Optional -  tell Arduino if you are using the button
+  // If using the button, uncomment the next line:
+  //set_arduino_button();
 
   // put your setup code here, to run once:
 
@@ -53,9 +53,6 @@ bool first_time_blue = true;
 bool first_time_cyan = true;
 
 void loop() {
-  // Required command in loop to run background Jewelbots functions
-  jewelbots_run();
-
   // put your main code here, to run repeatedly:
 
   // Red friend group:

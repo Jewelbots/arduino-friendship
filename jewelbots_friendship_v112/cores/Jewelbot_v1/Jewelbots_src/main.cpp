@@ -178,17 +178,17 @@ int main(void) {
   jewelbot_service_init();
   jewelbots_power_save();
   arduino_timer_init();
+  set_arduino_coding();
   // Run additional init from the setup function
   setup();
   for (;;) {
-    if (!get_arduino_coding()){
-      state_machine_dispatch();
-      app_sched_execute();
-      ret_code_t err_code = sd_app_evt_wait();
-      APP_ERROR_CHECK(err_code);
-    } else {
+    if (get_arduino_coding()){
       loop();
     }
+    state_machine_dispatch();
+    app_sched_execute();
+    ret_code_t err_code = sd_app_evt_wait();
+    APP_ERROR_CHECK(err_code);
 
   }
 }

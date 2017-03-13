@@ -10,4 +10,7 @@ void set_arduino_coding(void);
 void set_arduino_coding_false(void);
 bool get_arduino_coding(void);
 
+void set_arduino_button(void);
+bool get_arduino_button(void);
+
 #endif
