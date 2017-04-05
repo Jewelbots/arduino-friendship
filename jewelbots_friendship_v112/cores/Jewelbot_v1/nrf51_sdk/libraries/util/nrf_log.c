@@ -278,7 +278,7 @@ uint32_t log_uart_read_input(char * c)
 #include "app_uart.h"
 #include <stdio.h>
 #include <string.h>
-#include "bsp.h"
+#include "jewelbot_gpio.h"
 
 uint32_t log_raw_uart_init()
 {
@@ -291,7 +291,7 @@ uint32_t log_raw_uart_init()
 
     // Set a default baud rate of UART0_CONFIG_BAUDRATE
     NRF_UART0->PSELTXD  = TX_PIN_NUMBER;
-    NRF_UART0->BAUDRATE = UART0_CONFIG_BAUDRATE;
+    NRF_UART0->BAUDRATE = UART_BAUDRATE_BAUDRATE_Baud38400;
 
     NRF_UART0->PSELRTS  = 0xFFFFFFFF;
     NRF_UART0->PSELCTS  = 0xFFFFFFFF;
@@ -308,6 +308,7 @@ uint32_t log_raw_uart_init()
 
     return NRF_SUCCESS;
 }
+
 
 void log_raw_uart_printf(const char * format_msg, ...)
 {
@@ -422,4 +423,3 @@ const char* log_hex(uint32_t value)
 
     return (const char*)hex_string;
 }
-

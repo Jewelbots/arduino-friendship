@@ -13,4 +13,8 @@ bool get_arduino_coding(void);
 void set_arduino_button(void);
 bool get_arduino_button(void);
 
+void set_run_loop_charging(void);
+bool get_run_loop_charging(void);
+
+
 #endif

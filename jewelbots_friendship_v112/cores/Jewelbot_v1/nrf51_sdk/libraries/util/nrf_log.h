@@ -16,7 +16,7 @@
 #endif
 
 #ifndef NRF_LOG_USES_RAW_UART
-#define NRF_LOG_USES_RAW_UART 0
+#define NRF_LOG_USES_RAW_UART 1
 #endif
 
 #ifndef NRF_LOG_USES_COLORS
@@ -407,6 +407,7 @@ uint32_t log_raw_uart_init(void);
  * @param  format_msg      Printf format string.
  */
 void log_raw_uart_printf(const char * format_msg, ...);
+
 
 /**@brief Function for logging a single character to raw UART.
  *

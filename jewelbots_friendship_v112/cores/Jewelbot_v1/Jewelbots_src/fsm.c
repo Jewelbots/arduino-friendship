@@ -470,8 +470,10 @@ void jwb_charging(jewelbot_t *me, jwb_event const *e) {
 			disable_led();
       set_jwb_event_signal(JEWELBOT_ON_SIG);
     } else {
-      set_arduino_coding_false();
-      led_indicate_charging_state(pmic_is_charging());
+      if (!get_run_loop_charging()) {
+        set_arduino_coding_false();
+        led_indicate_charging_state(pmic_is_charging());
+      }
     }
     break; // wait
   }
