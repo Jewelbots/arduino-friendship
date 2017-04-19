@@ -55,7 +55,7 @@
 #define SLAVE_LATENCY 6
 #define ADV_TYPE_LEN 2
 #define BEACON_DATA_LEN 21
-#define APP_FEATURE_NOT_SUPPORTED            BLE_GATT_STATUS_ATTERR_APP_BEGIN + 2     
+#define APP_FEATURE_NOT_SUPPORTED            BLE_GATT_STATUS_ATTERR_APP_BEGIN + 2
 
 #define FIRST_CONN_PARAMS_UPDATE_DELAY                                         \
   APP_TIMER_TICKS(5000, APP_TIMER_PRESCALER)
@@ -142,7 +142,7 @@ static void on_ble_peripheral_evt(ble_evt_t *p_ble_evt) {
 
   uint32_t err_code;
 	ble_user_mem_block_t mem_block;
-	
+
   switch (p_ble_evt->header.evt_id) {
 
   case BLE_GAP_EVT_CONNECTED: {
@@ -151,11 +151,11 @@ static void on_ble_peripheral_evt(ble_evt_t *p_ble_evt) {
     const ble_gap_addr_t *peer_addr =
         &p_ble_evt->evt.gap_evt.params.connected.peer_addr;
     NRF_LOG_DEBUG("PERIPHERAL: CONNECTED\r\n");
-		
+
     if (friend_adding_mode()) {
       set_pending_friend(peer_addr);
 			break;
-    } 
+    }
     start_advertising(ADV_MODE_NONCONNECTABLE);
     break;
   }
@@ -171,11 +171,11 @@ static void on_ble_peripheral_evt(ble_evt_t *p_ble_evt) {
     if (get_current_event()->sig == WAITING_FOR_CONNECTEE_SIG) {
       set_jwb_event_signal(CONNECTEE_FOUND_SIG);
 			ff_conn_as_periph = true;
-			set_ff_index(FF_SENTINEL); 
+			set_ff_index(FF_SENTINEL);
 			start_advertising(ADV_MODE_FF_NONCONN);
 			start_scanning();
 			break;
-    } 
+    }
 		NRF_LOG_DEBUG("in peripheral disconnected, starting scan / adv\r\n");
 		start_scanning();
 		start_advertising(ADV_MODE_NONCONNECTABLE);
@@ -208,22 +208,22 @@ static void on_ble_peripheral_evt(ble_evt_t *p_ble_evt) {
 void on_ble_central_evt(ble_evt_t *p_ble_evt) {
   uint32_t err_code;
   ble_gatts_rw_authorize_reply_params_t auth_reply;
-  
+
   const ble_gap_evt_t *p_gap_evt = &p_ble_evt->evt.gap_evt;
   switch (p_ble_evt->header.evt_id) {
-  
+
   case BLE_GAP_EVT_CONNECTED: {
     const ble_gap_addr_t *peer_addr = &p_gap_evt->params.connected.peer_addr;
     m_conn_handle = p_gap_evt->conn_handle;
     NRF_LOG_DEBUG("CENTRAL: CONNECTED\r\n");
-		
+
     if (friend_adding_mode()) {
       set_pending_friend(peer_addr);
 			break;
-    } 
+    }
     if (ble_conn_state_n_centrals() == MAX_CONNECTED_CENTRALS) {
     }
-    start_scanning(); 
+    start_scanning();
 		start_advertising(ADV_MODE_NONCONNECTABLE);
     break; // BLE_GAP_EVT_CONNECTED
   }
@@ -238,10 +238,10 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 		sd_ble_gap_connect_cancel();
 		if (get_current_event()->sig == WAITING_FOR_CONNECTEE_SIG) {
 			if (p_ble_evt->evt.gap_evt.params.disconnected.reason != 0x3E) {
-        set_jwb_event_signal(CONNECTEE_FOUND_SIG);	
+        set_jwb_event_signal(CONNECTEE_FOUND_SIG);
 				ff_conn_as_central = true;
 				set_ff_index(FF_SENTINEL);
-				start_scanning(); 
+				start_scanning();
 				start_advertising(ADV_MODE_FF_NONCONN);
 			}
 			break;
@@ -258,7 +258,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
     data_t type_data;
 		uint8_t packet_type = p_gap_evt->params.adv_report.scan_rsp;
 
-		
+
 		if (packet_type == 0) {
 			// normal advertising packet
 			adv_data.p_data = (uint8_t *)p_gap_evt->params.adv_report.data;
@@ -268,7 +268,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 			err_code = adv_report_parse(BLE_GAP_AD_TYPE_MANUFACTURER_SPECIFIC_DATA,
 																	&adv_data, &type_data);
 			if (err_code == NRF_SUCCESS) {
-				//NRF_LOG_DEBUG("Parse ADV REPORT\r\n");	
+				//NRF_LOG_DEBUG("Parse ADV REPORT\r\n");
 				if (friend_adding_mode()) {
 					if (dest_friend_adding_mode(&type_data)) {
 						NRF_LOG_DEBUG("attempt to connect\r\n");
@@ -282,7 +282,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 							//set_jwb_event_signal(MOVE_OUT_OF_RANGE_SIG);
 							NRF_LOG_DEBUG("gap connect not NRF SUCCESS\r\n");
 						}
-					} 
+					}
 				}
 				if (dest_jewelbot(&type_data)) {
 					bool dest_ff_mode = dest_friend_adding_mode(&type_data);
@@ -298,8 +298,8 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 																	&scan_data, &type_data);
 			uint8_t index = 0;
 			uint8_t color_index = 9;
-		
-			if (err_code == NRF_SUCCESS) {	
+
+			if (err_code == NRF_SUCCESS) {
 				//NRF_LOG_DEBUG("scan report parse\r\n");
 				if ((dest_jewelbot(&type_data)) && (jwb_friend_found(scan_address, &index)) && (type_data.p_data[MSG_REC_FLAG_INDEX] == 0xBB))  {
 					uint8_t scan_index = type_data.p_data[MSG_REC_START_INDEX];
@@ -311,7 +311,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 						uint8_t msg_length = size - MSG_REC_START_INDEX - MSG_TAG_LENGTH;
 						uint8_t msg_tag[MSG_TAG_LENGTH];
 						uint8_t j = 0;
-						
+
 						for (uint8_t i = MSG_REC_START_INDEX; i < size-MSG_TAG_LENGTH; i++) {
 							//NRF_LOG_PRINTF_DEBUG("%u ", type_data.p_data[i]);
 							msg[j] = type_data.p_data[i];
@@ -329,7 +329,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 							record_msg_tag(msg_tag);
 							set_jwb_event_signal(MSG_RECEIVED_SIG);
 						}
-						
+
 					}
 					NRF_LOG_DEBUG("Scan report from a friend, but not same color\r\n");
 				} else if ((dest_jewelbot(&type_data)) && (jwb_pending_friend_found(scan_address))) {
@@ -337,7 +337,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 						//NRF_LOG_DEBUG("scan report from a ff advertise\r\n");
 						if (ff_conn_as_central) {
 							NRF_LOG_PRINTF_DEBUG("Central: Expected index:  %u, Index in scan report: %u\r\n", get_ff_index(), type_data.p_data[3]);
-						 if (type_data.p_data[3] != FF_SENTINEL) { 
+						 if (type_data.p_data[3] != FF_SENTINEL) {
 							 NRF_LOG_DEBUG("Setting central complete to true\r\n");
 							 ff_cent_complete = true;
 							 ff_conn_as_central = false;
@@ -347,7 +347,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 							if (type_data.p_data[3] != FF_SENTINEL) {
 								set_current_color(type_data.p_data[3]);
 								set_friend_selected();
-								
+
 							}
 						}
 					} else if ((type_data.p_data[MSG_REC_FLAG_INDEX] == 0xAC) && (ff_conn_as_periph)) {
@@ -356,7 +356,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 							ff_periph_complete = true;
 							ff_conn_as_periph = false;
 						} else {
-							
+
 						}
 					}
 				}
@@ -436,7 +436,7 @@ void on_ble_central_evt(ble_evt_t *p_ble_evt) {
 bool is_connected_to_master_device(uint16_t conn_handle) {
   if (conn_handle != BLE_CONN_HANDLE_INVALID) {
     pm_peer_id_t peer_id;
-    
+
     pm_peer_id_get(conn_handle, &peer_id);
     return (peer_id != PM_PEER_ID_INVALID);
   }
@@ -454,11 +454,11 @@ bool is_connected_to_master_device(uint16_t conn_handle) {
 static void ble_evt_dispatch(ble_evt_t *p_ble_evt) {
 
   ble_conn_state_on_ble_evt(p_ble_evt);
-  
+
   notify_dfu_ble_evt(p_ble_evt);
-  if (get_current_event()->sig == BOND_WITH_MASTER_DEVICE_SIG || get_current_event()->sig == JEWELBOT_CONNECTED_TO_MASTER_SIG || is_connected_to_master_device(p_ble_evt->evt.gap_evt.conn_handle)) { 
+  //if (get_current_event()->sig == BOND_WITH_MASTER_DEVICE_SIG || get_current_event()->sig == JEWELBOT_CONNECTED_TO_MASTER_SIG || is_connected_to_master_device(p_ble_evt->evt.gap_evt.conn_handle)) {
     pm_on_ble_evt(p_ble_evt);
-  }
+  //}
   // m_gap_role = ble_conn_state_role(p_ble_evt->evt.gap_evt.conn_handle);
   if (p_ble_evt->header.evt_id != BLE_GAP_EVT_ADV_REPORT) {
     m_gap_role = ble_conn_state_role(p_ble_evt->evt.gap_evt.conn_handle);
@@ -568,5 +568,5 @@ void gap_params_init(void) {
 
   err_code = sd_ble_gap_ppcp_set(&gap_conn_params);
   APP_ERROR_CHECK(err_code);
-	
+
 }

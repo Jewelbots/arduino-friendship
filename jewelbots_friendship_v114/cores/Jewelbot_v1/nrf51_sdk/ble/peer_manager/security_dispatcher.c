@@ -616,6 +616,13 @@ ret_code_t smd_params_reply(uint16_t                 conn_handle,
     else
     {
         // Pairing only, no action needed.
+        if(p_sec_params->lesc) //LESC 'Just works' pairing
+				{
+					NRF_LOG_DEBUG("In the new security dispatcher code.\r\n");
+					// Add own public key and buffer for peer public key to parameters passed to softdevice
+					sec_keyset.keys_own.p_pk       = p_public_key;
+					sec_keyset.keys_peer.p_pk      = &m_smd.peer_pk;
+        }
     }
 
     if (err_code == NRF_SUCCESS)
@@ -881,4 +888,3 @@ void smd_ble_evt_handler(ble_evt_t * p_ble_evt)
             break;
     };
 }
-

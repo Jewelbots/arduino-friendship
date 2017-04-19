@@ -593,7 +593,8 @@ ret_code_t im_whitelist_create(pm_peer_id_t *        p_peer_ids,
                 );
                 m_im.whitelist_addrs[peer_index].addr_type =
                     peer_data.p_bonding_data->peer_id.id_addr_info.addr_type;
-                p_whitelist->pp_addrs[peer_index] = &m_im.whitelist_addrs[peer_index];
+                // ERROR: invalid array index! The pp_addrs array index should be "p_whitelist->addr_count" instead of "peer_index"
+                p_whitelist->pp_addrs[p_whitelist->addr_count] = &m_im.whitelist_addrs[peer_index];
                 p_whitelist->addr_count++;
             }
             if (p_whitelist->pp_irks != NULL &&
@@ -604,7 +605,8 @@ ret_code_t im_whitelist_create(pm_peer_id_t *        p_peer_ids,
                     peer_data.p_bonding_data->peer_id.id_info.irk,
                     BLE_GAP_SEC_KEY_LEN
                 );
-                p_whitelist->pp_irks[peer_index] = &m_im.whitelist_irks[peer_index];
+                // ERROR: invalid array index! The pp_irks array index should be "p_whitelist->irk_count" instead of "peer_index"
+                p_whitelist->pp_irks[p_whitelist->irk_count] = &m_im.whitelist_irks[peer_index];
                 p_whitelist->irk_count++;
                 m_im.irk_whitelist_peer_ids[peer_index] = p_peer_ids[peer_index];
                 m_im.n_irk_whitelist_peer_ids++;

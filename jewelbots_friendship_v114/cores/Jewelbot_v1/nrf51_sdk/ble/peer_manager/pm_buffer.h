@@ -33,7 +33,7 @@
 #define PM_BUFFER_INIT(p_buffer, n_blocks, block_size, err_code)    \
 do                                                                  \
 {                                                                   \
-    static uint8_t buffer_memory[(n_blocks) * (block_size)];        \
+    __ALIGN(sizeof(uint32_t)) static uint8_t buffer_memory[(n_blocks) * (block_size)];        \
     static uint8_t mutex_memory[MUTEX_STORAGE_SIZE(n_blocks)];      \
     err_code = pm_buffer_init((p_buffer),                           \
                                buffer_memory,                       \
