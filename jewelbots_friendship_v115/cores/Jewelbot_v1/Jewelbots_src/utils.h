@@ -16,5 +16,7 @@ bool get_arduino_button(void);
 void set_run_loop_charging(void);
 bool get_run_loop_charging(void);
 
+void set_erase_bonds(void);
+bool get_erase_bonds(void);
 
 #endif

@@ -24,6 +24,8 @@
 #include "peer_manager.h"
 #include "nrf_delay.h"
 
+#include "led_sequence.h"
+
 #define IRQ_ENABLED            0x01                                     /**< Field that identifies if an interrupt is enabled. */
 #define MAX_NUMBER_INTERRUPTS  32                                       /**< Maximum number of interrupts available. */
 
@@ -31,6 +33,7 @@ static void                    dfu_app_reset_prepare(void);             /**< For
 static dfu_app_reset_prepare_t m_reset_prepare = dfu_app_reset_prepare; /**< Callback function to application to prepare for system reset. Allows application to clean up service and memory before reset. */
 static dfu_ble_peer_data_t     m_peer_data;                             /**< Peer data to be used for data exchange when resetting into DFU mode. */
 
+static bool m_arduino_reset = false;
 
 /**@brief Function for reset_prepare handler if the application has not registered a handler.
  */
@@ -78,32 +81,32 @@ static void dfu_app_peer_data_set(uint16_t conn_handle)
     err_code = pm_peer_id_get(conn_handle,&peer_id);
     //APP_ERROR_CHECK(err_code);
 		if (err_code == NRF_SUCCESS) {
-    
+
 			err_code = pm_peer_data_bonding_load(peer_id, &peer_data_bonding);
 			if(err_code == NRF_SUCCESS)
-			{        
+			{
 					m_peer_data.addr              = peer_data_bonding.peer_id.id_addr_info;
 					m_peer_data.irk               = peer_data_bonding.peer_id.id_info;
-					m_peer_data.enc_key.enc_info  = peer_data_bonding.own_ltk.enc_info; 
+					m_peer_data.enc_key.enc_info  = peer_data_bonding.own_ltk.enc_info;
 					m_peer_data.enc_key.master_id = peer_data_bonding.own_ltk.master_id;
-								
+
 					err_code = dfu_ble_svc_peer_data_set(&m_peer_data);
 					APP_ERROR_CHECK(err_code);
-					
+
 			}
 			else
 			{
 					err_code = im_ble_addr_get(conn_handle,&m_peer_data.addr);
 					APP_ERROR_CHECK(err_code);
-					
+
 					err_code = dfu_ble_svc_peer_data_set(&m_peer_data);
-					APP_ERROR_CHECK(err_code);      
+					APP_ERROR_CHECK(err_code);
 			}
-    
+
 		}
 }
 
-
+void set_arduino_reset(void) { m_arduino_reset = true; }
 
 /**@brief Function for preparing the reset, disabling SoftDevice, and jumping to the bootloader.
  *
@@ -127,12 +130,12 @@ static void bootloader_start(uint16_t conn_handle)
 
     m_reset_prepare();
 		NRF_LOG_DEBUG("^");
-		
+
 //		uint32_t dfu_reg_value;
 //		err_code = sd_power_gpregret_get(&dfu_reg_value);
 //		NRF_LOG_PRINTF_DEBUG("Value of register %2x\r\n", dfu_reg_value);
 //		APP_ERROR_CHECK(err_code);
-		if (is_connected_to_master_device(conn_handle)) {
+		if ((is_connected_to_master_device(conn_handle)) && (!m_arduino_reset)) {
 			NRF_LOG_DEBUG("(");
 			err_code = sd_power_gpregret_clr(0xffffffff);
 			APP_ERROR_CHECK(err_code);
@@ -144,6 +147,7 @@ static void bootloader_start(uint16_t conn_handle)
 			APP_ERROR_CHECK(err_code);
 			err_code = sd_power_gpregret_set(DFU_START_USB);
 			APP_ERROR_CHECK(err_code);
+      m_arduino_reset = false;
 		}
 		NRF_LOG_DEBUG("@");
 
@@ -173,7 +177,7 @@ void dfu_app_on_dfu_evt(ble_dfu_t * p_dfu, ble_dfu_evt_t * p_evt)
 
         default:
             {
-                // Unsupported event received from DFU Service. 
+                // Unsupported event received from DFU Service.
                 // Send back BLE_DFU_RESP_VAL_NOT_SUPPORTED message to peer.
                 uint32_t err_code = ble_dfu_response_send(p_dfu,
                                                           BLE_DFU_START_PROCEDURE,
@@ -194,7 +198,7 @@ void dfu_app_reset_prepare_set(dfu_app_reset_prepare_t reset_prepare_func)
 //void dfu_app_dm_appl_instance_set(dm_application_instance_t app_instance)
 //{
 //    uint32_t err_code;
-//    
+//
 //    err_code = dm_application_instance_set(&app_instance, &m_dm_handle);
 //    APP_ERROR_CHECK(err_code);
 //}

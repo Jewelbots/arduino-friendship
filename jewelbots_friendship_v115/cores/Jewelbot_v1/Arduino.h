@@ -27,6 +27,7 @@ extern "C"{
 #include "fsm.h"
 #include "led_sequence.h"
 #include "nrf_log.h"
+#include "friend_data_storage.h"
 
 /* sketch */
 extern void setup( void ) ;

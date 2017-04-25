@@ -11,6 +11,7 @@
 bool arduino_coding = false;
 bool arduino_button = false;
 bool run_loop_charging = false;
+static bool m_erase_bonds = false;
 
 void set_arduino_coding(void) { arduino_coding = true; }
 void set_arduino_coding_false(void) { arduino_coding = false; }
@@ -21,6 +22,9 @@ bool get_arduino_button(void) { return arduino_button; }
 
 void set_run_loop_charging(void) {run_loop_charging = true; }
 bool get_run_loop_charging(void) { return run_loop_charging; }
+
+void set_erase_bonds(void) { m_erase_bonds = true; }
+bool get_erase_bonds(void) { return m_erase_bonds; }
 
 void ble_address_to_string_convert(ble_gap_addr_t address,
                                    uint8_t *string_buffer) {

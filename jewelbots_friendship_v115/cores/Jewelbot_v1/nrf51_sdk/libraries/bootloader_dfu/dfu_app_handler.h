@@ -9,7 +9,7 @@
  * the file.
  *
  */
-  
+
 /** @file
  *
  * @defgroup nrf_dfu_app_handler DFU BLE packet handling in application
@@ -17,20 +17,20 @@
  *
  * @brief Handling of DFU BLE packets in the application.
  *
- * @details This module implements the handling of DFU packets for switching 
+ * @details This module implements the handling of DFU packets for switching
  *          from an application to the bootloader and start DFU mode. The DFU
- *          packets are transmitted over BLE. 
- *          This module handles only the StartDFU packet, which allows a BLE 
+ *          packets are transmitted over BLE.
+ *          This module handles only the StartDFU packet, which allows a BLE
  *          application to expose support for the DFU Service.
- *          The actual DFU Service runs in a dedicated environment after a BLE 
- *          disconnect and reset of the \nRFXX device. 
- *          The host must reconnect and continue the update procedure with 
+ *          The actual DFU Service runs in a dedicated environment after a BLE
+ *          disconnect and reset of the \nRFXX device.
+ *          The host must reconnect and continue the update procedure with
  *          access to the full DFU Service.
  *
  * @note The application must propagate DFU events to this module by calling
  *       @ref dfu_app_on_dfu_evt from the @ref ble_dfu_evt_handler_t callback.
  */
- 
+
 #ifndef DFU_APP_HANDLER_H__
 #define DFU_APP_HANDLER_H__
 
@@ -41,17 +41,19 @@
 #define DFU_APP_ATT_TABLE_POS     0                     /**< Position for the ATT table changed setting. */
 #define DFU_APP_ATT_TABLE_CHANGED 1                     /**< Value indicating that the ATT table might have changed. This value will be set in the application-specific context in Device Manager when entering DFU mode. */
 
-/**@brief DFU application reset_prepare function. This function is a callback that allows the 
- *        application to prepare for an upcoming application reset. 
+void set_arduino_reset(void);
+
+/**@brief DFU application reset_prepare function. This function is a callback that allows the
+ *        application to prepare for an upcoming application reset.
  */
 typedef void (*dfu_app_reset_prepare_t)(void);
 
-/**@brief   Function for handling events from the DFU Service. 
+/**@brief   Function for handling events from the DFU Service.
  *
- * @details The application must inject this function into the DFU Service or propagate DFU events 
- *          to the dfu_app_handler module by calling this function in the application-specific DFU event 
+ * @details The application must inject this function into the DFU Service or propagate DFU events
+ *          to the dfu_app_handler module by calling this function in the application-specific DFU event
  *          handler.
- * 
+ *
  * @param[in] p_dfu  Pointer to the DFU Service structure to which the include event relates.
  * @param[in] p_evt  Pointer to the DFU event.
  */

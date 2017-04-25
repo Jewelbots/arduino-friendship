@@ -29,7 +29,10 @@ static bool m_redo_write = false;
 static friends_list_t *m_friends_list;
 bool friends_list_loaded(void) { return fl_loaded; }
 void set_friends_list_loaded(void) { fl_loaded = true; }
-void set_delete_friends_list(void) { m_delete_friends = true; }
+void set_delete_friends_list(void) {
+  m_delete_friends = true;
+  set_erase_bonds();
+}
 
 
 
@@ -72,7 +75,7 @@ void jwb_fds_evt_handler(fds_evt_t const *const p_fds_evt) {
                     ((p_fds_evt->del.file_id) < PDS_FIRST_RESERVED_RECORD_KEY))
       {
 				NRF_LOG_PRINTF_DEBUG("FDS_EVT_DEL_FILE %u\r\n", p_fds_evt->result);
-				if (!m_redo_write){	
+				if (!m_redo_write){
 					m_delete_gc = true;
 				}
 				err_code = fds_gc();
@@ -177,7 +180,7 @@ void save_friends(friends_list_t *friends_list) {
   record.data.num_chunks = 1;
   err_code = fds_record_find(JWB_FRIENDS_TYPE_ID, JWB_FRIENDS_INSTANCE_ID,
                          &friend_list_descriptor, &tok);
-   
+
   err_code = fds_record_update(&friend_list_descriptor, &record);
   //APP_ERROR_CHECK(err_code);
   //NRF_LOG_PRINTF_DEBUG("fds record update ret code = %u\r\n", err_code);
@@ -186,7 +189,7 @@ void save_friends(friends_list_t *friends_list) {
 			m_friends_list = friends_list;
       err_code = fds_file_delete(JWB_FRIENDS_TYPE_ID);
       APP_ERROR_CHECK(err_code);
-	} 
+	}
 }
 
 void load_friends(friends_list_t *friends_to_load) {
@@ -203,9 +206,8 @@ void load_friends(friends_list_t *friends_to_load) {
 		found_nothing = false;
 		//NRF_LOG_DEBUG("Found something to load\r\n");
 	}
-	
+
 	if (found_nothing) {
 		set_create_friends_list();
 	}
 }
-

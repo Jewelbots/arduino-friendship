@@ -1,4 +1,4 @@
-#ifdef __cplusplus
+ #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
 
@@ -18,6 +18,7 @@ extern "C"{
 #include "ble_conn_params.h"
 #include "ble_conn_state.h"
 #include "common_defines.h"
+#include "dfu_app_handler.h"
 #include "fds.h"
 #include "fstorage.h"
 #include "nordic_common.h"
@@ -41,6 +42,7 @@ extern "C"{
 #include "button_handler.h"
 #include "common_defines.h"
 #include "db_discovery.h"
+#include "dfu_handler.h"
 #include "friend_data_storage.h"
 #include "fsm.h"
 #include "Haptics.h"
@@ -51,12 +53,14 @@ extern "C"{
 #include "jewelbot_service.h"
 #include "jewelbot_types.h"
 #include "jwb_dis.h"
+#include "jwb_twi.h"
 #include "led_sequence.h"
 #include "messaging.h"
 #include "peer_management.h"
 #include "pmic_driver.h"
 #include "scan.h"
-#include "jwb_twi.h"
+#include "utils.h"
+
 
 
 #ifdef __cplusplus
@@ -99,23 +103,26 @@ static char *__attribute__((unused)) ident =
 #endif
 
 static bool m_erase_bonds = false;
+static bool first_startup = false;
 
 static void check_reset_reason() {
   uint32_t reset_reason = 0;
   sd_power_reset_reason_get(&reset_reason);
   NRF_LOG_PRINTF_DEBUG("Reset Reason: 0x%04x\r\n", reset_reason);
-  if (reset_reason & POWER_RESETREAS_RESETPIN_Detected) {
+  if ((reset_reason & POWER_RESETREAS_RESETPIN_Detected) && (!first_startup)) {
     //logo_breathe();
     //delete_friends_list();
 		NRF_LOG_DEBUG("In check reset reason\r\n");
-		set_delete_friends_list();
-    m_erase_bonds = true;
+		//set_delete_friends_list();
+    //m_erase_bonds = true;
     sd_power_reset_reason_clr(POWER_RESETREAS_RESETPIN_Msk);
     nrf_delay_ms(1000);
+    set_arduino_reset();
+    bootloader_start();
   }
-  else {
-    m_erase_bonds = false;
-  }
+  //else {
+    //m_erase_bonds = false;
+  //}
 }
 
 
@@ -144,6 +151,7 @@ int main(void) {
 	if (app_dfu)
 	{
 			NRF_POWER->GPREGRET = 0;
+      first_startup = true;
 	}
   ret_code_t err_code = 0;
   nrf_gpio_cfg_output(LED_RST);
@@ -172,6 +180,11 @@ int main(void) {
   set_ble_opts();
   init_advertising_module();
 	check_reset_reason();
+
+  // Run additional init from the setup function
+  setup();
+
+  m_erase_bonds = get_erase_bonds();
 	peer_management_init(m_erase_bonds, app_dfu);
 	jewelbot_state_machine_init();
   messaging_init();
@@ -179,8 +192,7 @@ int main(void) {
   jewelbots_power_save();
   arduino_timer_init();
   set_arduino_coding();
-  // Run additional init from the setup function
-  setup();
+
   for (;;) {
     if (get_arduino_coding()){
       loop();
