@@ -22,7 +22,7 @@
 #define SCAN_INTERVAL MSEC_TO_UNITS(160, UNIT_0_625_MS)
 // 0x00E0 //140ms
 // 0x0050 // 50 ms
-#define SCAN_WINDOW MSEC_TO_UNITS(80, UNIT_0_625_MS)
+#define SCAN_WINDOW MSEC_TO_UNITS(40, UNIT_0_625_MS)
 
 APP_TIMER_DEF(scan_timer_id);
 #define SCAN_RESTART_TIMEOUT APP_TIMER_TICKS(20000, APP_TIMER_PRESCALER)
@@ -36,8 +36,8 @@ static const ble_gap_scan_params_t m_scan_param = {
     1,    // Active scanning set.
     0,    // Selective scanning not set.
     NULL, // No whitelist provided.
-    SCAN_INTERVAL, 
-    SCAN_WINDOW, 
+    SCAN_INTERVAL,
+    SCAN_WINDOW,
     0x0000 // No timeout.
 };
 const ble_gap_scan_params_t *get_scan_params(void) { return &m_scan_param; }
@@ -90,9 +90,9 @@ void set_ble_opts(void) {
 void stop_scanning(void) {
   uint32_t err_code = sd_ble_gap_scan_stop();
 	NRF_LOG_PRINTF_DEBUG("STOP SCANNING %u\r\n", err_code);
-  if (err_code == NRF_SUCCESS) { 
+  if (err_code == NRF_SUCCESS) {
     m_scanning = false;
-    
+
   }
 }
 

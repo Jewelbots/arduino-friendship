@@ -27,6 +27,10 @@
 #define APP_CFG_NON_CONN_ADV_TIMEOUT 0
 
 #define NUM_CONN_APPS 8
+
+#define CONN_ADV_INT 80
+#define NONCONN_ADV_INT 160
+
 static bool m_advertising_start_pending = false;
 static bool m_advertising = false;
 static advertising_mode_t m_current_advertising_mode = ADV_MODE_OFF;
@@ -135,7 +139,7 @@ static void advertising_init(bool friend_finding) {
 	m_adv_params.p_whitelist = NULL;
   m_adv_params.type = BLE_GAP_ADV_TYPE_ADV_IND;
 
-  m_adv_params.interval = MSEC_TO_UNITS(80, UNIT_0_625_MS);
+  m_adv_params.interval = MSEC_TO_UNITS(CONN_ADV_INT, UNIT_0_625_MS);
 }
 
 // Now this mode is connectable but filtered by whitelist from peer manager
@@ -218,7 +222,7 @@ static void non_connectable_advertising_init() {
 		m_adv_params.type = BLE_GAP_ADV_TYPE_ADV_SCAN_IND;
 	}
 
-  m_adv_params.interval = MSEC_TO_UNITS(160, UNIT_0_625_MS);
+  m_adv_params.interval = MSEC_TO_UNITS(NONCONN_ADV_INT, UNIT_0_625_MS);
 }
 
 static void msg_non_conn_advertising_init() {
@@ -235,7 +239,7 @@ static void msg_non_conn_advertising_init() {
 	m_adv_params.fp = BLE_GAP_ADV_FP_ANY;
 	m_adv_params.p_whitelist = NULL;
   m_adv_params.type = BLE_GAP_ADV_TYPE_ADV_SCAN_IND;
-  m_adv_params.interval = MSEC_TO_UNITS(160, UNIT_0_625_MS);
+  m_adv_params.interval = MSEC_TO_UNITS(NONCONN_ADV_INT, UNIT_0_625_MS);
 }
 
 static void ff_non_conn_advertising_init() {
@@ -252,7 +256,7 @@ static void ff_non_conn_advertising_init() {
 	m_adv_params.fp = BLE_GAP_ADV_FP_ANY;
 	m_adv_params.p_whitelist = NULL;
   m_adv_params.type = BLE_GAP_ADV_TYPE_ADV_SCAN_IND;
-  m_adv_params.interval = MSEC_TO_UNITS(160, UNIT_0_625_MS);
+  m_adv_params.interval = MSEC_TO_UNITS(NONCONN_ADV_INT, UNIT_0_625_MS);
 }
 
 void stop_advertising() {
