@@ -8,5 +8,6 @@
 #include "Arduino.h"
 
 void jewelbots_run(void);
+uint8_t get_random_int(uint8_t min_value, uint8_t max_value);
 
 #endif
