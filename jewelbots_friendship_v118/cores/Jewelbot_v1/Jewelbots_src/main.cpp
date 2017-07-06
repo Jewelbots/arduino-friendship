@@ -181,16 +181,19 @@ int main(void) {
   init_advertising_module();
 	check_reset_reason();
 
-  // Run additional init from the setup function
-  setup();
-
   m_erase_bonds = get_erase_bonds();
 	peer_management_init(m_erase_bonds, app_dfu);
 	jewelbot_state_machine_init();
   messaging_init();
   jewelbot_service_init();
   jewelbots_power_save();
+
+  // Arduino specific code here
+  // First init the timers in case users want to use a timer in setup (animtion)
   arduino_timer_init();
+  // Next setup in case the user defines set run loop chargning
+  setup();
+  // Last set arduino coding since it depends on user settings in setup()
   set_arduino_coding();
 
   for (;;) {
