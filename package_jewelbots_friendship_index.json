@@ -256,7 +256,7 @@
                     "architecture": "Jewelbot_v1",
                     "version": "1.2.1",
                     "category": "Contributed",
-                    "url": "https://github.com/Jewelbots/arduino-friendship/releases/download/v1.2.1/jewelbots_friendship_v121.tar.gz",
+                    "url": "https://s3-us-west-2.amazonaws.com/friendship-board/jewelbots_friendship_v121.tar.gz",
                     "archiveFileName": "jewelbots_friendship_v121.tar.gz",
                     "size": "3100000",
                     "boards":
