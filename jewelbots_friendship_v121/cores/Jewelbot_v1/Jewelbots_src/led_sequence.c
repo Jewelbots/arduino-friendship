@@ -41,34 +41,54 @@ void led_sequence_buffer_push(uint8_t color_index) {
 }
 
 // Arduino variable definitions
-static bool arduino_colors[] = {false, false, false, false};
+static bool visible_friends[] = {false, false, false, false};
 
-bool see_red_friends(void) { return arduino_colors[0]; }
-bool see_green_friends(void) { return arduino_colors[1]; }
-bool see_blue_friends(void) { return arduino_colors[2]; }
-bool see_cyan_friends(void) { return arduino_colors[3]; }
+bool see_red_friends(void) { return visible_friends[0]; }
+bool see_green_friends(void) { return visible_friends[1]; }
+bool see_blue_friends(void) { return visible_friends[2]; }
+bool see_cyan_friends(void) { return visible_friends[3]; }
 
-static void save_arduino_colors(uint8_t num_colors, uint8_t *colors) {
-  for (uint8_t i = 0; i < NUM_COLORS_UNLOCKED; i++) {
-    arduino_colors[i] = false;
+__attribute__((weak)) void see_new_friend(ColorLabel friendship_color) {
+}
+
+static ColorLabel to_label(uint8_t color_num) {
+  switch (color_num) {
+    case 0:
+      return RED;
+    case 1:
+      return GREEN;
+    case 2:
+      return BLUE;
+    case 3:
+      return CYAN;
   }
-  for (uint8_t i = 0; i < num_colors; i++){
-    switch (colors[i]){
-      case 0:
-        arduino_colors[0] = true;
+}
+
+static void save_visible_friends(uint8_t array_len, uint8_t *currently_visible_friends) {
+  // for each of the four colours, if there are any matching friends in the room,
+  // set the corresponding visible_friends to true so see_red_friends et al return the right value.
+  // Additionally, if it was previously false (ie there wasn't previously a matching friend in the room),
+  // we'll call the see_new_friends callback.
+
+  for (uint8_t group_number = 0; group_number < 4; group_number++) {
+    
+    for (uint8_t i = 0; i < array_len; i++){
+
+      if (currently_visible_friends[i] == group_number) {
+        // there's someone in the room who is in this friendship group
+        if (!visible_friends[group_number]) {
+          // they weren't previously in the room
+          see_new_friend(to_label(group_number));
+        }
+        visible_friends[group_number] = true;
         break;
-      case 1:
-        arduino_colors[1] = true;
-        break;
-      case 2:
-        arduino_colors[2] = true;
-        break;
-      case 3:
-        arduino_colors[3] = true;
-        break;
-      default:
-        break;
+      }
+      
     }
+
+    // we got to the end of the inner loop:
+    // there is no one in the room in this friendship group
+    visible_friends[group_number] = false;
   }
 }
 
@@ -347,7 +367,7 @@ void breathe_friends() {
   }
   if (err_code != BUF_SUCCESS) {
   }
-  save_arduino_colors(num_of_colors, colors);
+  save_visible_friends(num_of_colors, colors);
   if (num_of_colors > 0) {
     if (num_of_colors > 4) {
     }
