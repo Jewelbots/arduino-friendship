@@ -2,6 +2,7 @@
 #define __LED_SEQUENCE_H__
 
 #include "fsm.h"
+#include "LED_ColorLabel.h"
 #include <stdint.h>
 
 void led_indicate_error(void);
@@ -36,5 +37,7 @@ bool see_red_friends(void);
 bool see_green_friends(void);
 bool see_blue_friends(void);
 bool see_cyan_friends(void);
+
+void see_new_friend(ColorLabel friendship_color);
 
 #endif

@@ -1,13 +1,10 @@
-
 #ifndef __LED_COLORS_H__
 #define __LED_COLORS_H__
 
+#include "LED_ColorLabel.h"
 
 extern "C"{
  // __cplusplus
-
-enum ColorLabel { OFF = 0, RED = 1, GREEN = 2, BLUE = 3, YELLOW = 4, MAGENTA = 5, CYAN = 6, WHITE = 7, ORANGE = 8, GOLD = 9, PURPLE = 10, PERIWINKLE = 11, ROSE = 12, OCEAN = 13, SKY = 14 };
-
 
 struct Color
 {
@@ -38,7 +35,6 @@ const Color COLORS[15] = {
   Color( 0x20, 0xB2, 0x50), // Ocean
   Color( 0x64, 0x95, 0xFA) // Sky
 };
-
 
 
 }
